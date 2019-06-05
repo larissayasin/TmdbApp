@@ -1,47 +1,49 @@
-package com.arctouch.codechallenge.viewmodel
+package com.arctouch.codechallenge.viewmodel.home
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.arctouch.codechallenge.data.Cache
 import com.arctouch.codechallenge.model.Movie
 import com.arctouch.codechallenge.repository.MovieRepository
+import com.arctouch.codechallenge.util.GenericEvent
+import com.arctouch.codechallenge.viewmodel.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
-class HomeViewModel(private val repository: MovieRepository) : ViewModel() {
+class HomeViewModel(private val repository: MovieRepository) : BaseViewModel() {
 
-    val movieEvent = MutableLiveData<MovieGenreEvent>()
+    val movieEvent = MutableLiveData<GenericEvent>()
     val genreEvent = MutableLiveData<GenreEvent>()
 
     fun getUpcomingMoviews() {
-        movieEvent.value = MovieGenreEvent(isLoading = true)
-        repository.upcomingMovies(1)
+        movieEvent.value = GenericEvent(isLoading = true)
+        disposable = repository.upcomingMovies(1)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     val moviesWithGenres = it.results.map { movie ->
                         movie.copy(genres = Cache.genres.filter { movie.genreIds?.contains(it.id) == true })
                     }
-                    movieEvent.value = MovieGenreEvent(movies = moviesWithGenres)
+                    movieEvent.value = GenericEvent(data = moviesWithGenres)
                 }, { error ->
-                    movieEvent.value = MovieGenreEvent(error = error)
+                    movieEvent.value = GenericEvent(error = error)
                 })
+
     }
 
     fun getGenres() {
-        repository.genres()
+        disposable = repository.genres()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     genreEvent.value = GenreEvent(isSuccess = true)
                     Cache.cacheGenres(it.genres)
                 }, { error ->
-                    genreEvent.value = GenreEvent(error = error)
+                    genreEvent.value = GenreEvent(genreError = error)
                 })
-
     }
 
 }
 
-data class GenreEvent(val isSuccess: Boolean = false, val error: Throwable? = null)
-data class MovieGenreEvent(val isLoading: Boolean = false, val error: Throwable? = null, val movies: List<Movie>? = null)
+class GenreEvent(val isSuccess: Boolean = false, genreError: Throwable? = null) : GenericEvent(error = genreError)

@@ -1,4 +1,4 @@
-package com.arctouch.codechallenge.home
+package com.arctouch.codechallenge.view.home
 
 import android.os.Bundle
 import android.view.View
@@ -6,7 +6,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.arctouch.codechallenge.R
-import com.arctouch.codechallenge.viewmodel.HomeViewModel
+import com.arctouch.codechallenge.model.Movie
+import com.arctouch.codechallenge.viewmodel.home.HomeViewModel
 import kotlinx.android.synthetic.main.home_activity.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -24,7 +25,7 @@ class HomeActivity : AppCompatActivity() {
                 genreEvent.isSuccess ->
                     vm.getUpcomingMoviews()
                 genreEvent.error != null -> {
-                    Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.error_msg), Toast.LENGTH_SHORT).show()
                     progressBar.visibility = View.GONE
                 }
             }
@@ -33,16 +34,22 @@ class HomeActivity : AppCompatActivity() {
             if (event != null) {
                 when {
                     event.isLoading -> progressBar.visibility = View.VISIBLE
-                    event.movies != null -> {
-                        recyclerView.adapter = HomeAdapter(event.movies)
+                    event.data != null && event.data is List<*>-> {
+                        recyclerView.adapter = HomeAdapter(event.data  as List<Movie>)
                         progressBar.visibility = View.GONE
                     }
                     event.error != null -> {
-                        Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, getString(R.string.error_msg), Toast.LENGTH_SHORT).show()
                         progressBar.visibility = View.GONE
                     }
                 }
             }
         })
+    }
+
+    override fun onDestroy() {
+        vm.clearDisposable()
+        super.onDestroy()
+
     }
 }
