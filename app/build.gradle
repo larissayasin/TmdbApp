@@ -26,6 +26,7 @@ dependencies {
     def androidArchitectureVersion = '2.0.0-beta01'
     def koin_version = '2.0.0-rc-2'
     def okhttp_version = '3.8.1'
+    def paging_version = "2.1.0"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -45,6 +46,8 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
+
+    implementation "androidx.paging:paging-runtime:$paging_version"
 
     // Koin
     implementation "org.koin:koin-android:$koin_version"
