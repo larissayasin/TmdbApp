@@ -13,7 +13,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.activity_details.*
 import kotlinx.android.synthetic.main.home_activity.*
-import kotlinx.android.synthetic.main.movie_item.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class DetailsActivity : AppCompatActivity() {
@@ -57,7 +56,7 @@ class DetailsActivity : AppCompatActivity() {
                 .into(iv_details_poster)
 
         Glide.with(this)
-                .load(movie.backdropPath?.let { movieImageUrlBuilder.buildPosterUrl(it) })
+                .load(movie.backdropPath?.let { movieImageUrlBuilder.buildBackdropUrl(it) })
                 .apply(RequestOptions().placeholder(R.drawable.ic_image_placeholder))
                 .into(iv_details_backdrop)
     }
