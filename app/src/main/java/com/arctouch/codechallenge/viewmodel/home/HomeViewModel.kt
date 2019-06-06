@@ -10,7 +10,7 @@ import com.arctouch.codechallenge.model.Movie
 import com.arctouch.codechallenge.repository.MovieRepository
 import com.arctouch.codechallenge.repository.MoviesKeyedDataSource
 import com.arctouch.codechallenge.repository.MoviesKeyedDataSourceFactory
-import com.arctouch.codechallenge.util.GenericEvent
+import com.arctouch.codechallenge.util.Event
 import com.arctouch.codechallenge.viewmodel.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -18,7 +18,7 @@ import io.reactivex.schedulers.Schedulers
 class HomeViewModel(private val factory: MoviesKeyedDataSourceFactory, private val repository: MovieRepository) : BaseViewModel() {
     val genreEvent = MutableLiveData<GenreEvent>()
 
-    var networkStateLiveData: LiveData<GenericEvent<Void>>? = null
+    var networkStateLiveData: LiveData<Event<Void>>? = null
 
     lateinit var movieList: LiveData<PagedList<Movie>>
 
@@ -50,4 +50,4 @@ class HomeViewModel(private val factory: MoviesKeyedDataSourceFactory, private v
 
 }
 
-class GenreEvent(val isSuccess: Boolean = false, genreError: Throwable? = null) : GenericEvent<Void>(error = genreError)
+class GenreEvent(val isSuccess: Boolean = false, genreError: Throwable? = null) : Event<Void>(error = genreError)

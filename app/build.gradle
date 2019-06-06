@@ -24,7 +24,7 @@ android {
 
 dependencies {
     def androidArchitectureVersion = '2.0.0-beta01'
-    def koin_version = '2.0.0-rc-2'
+    def koin_version = '2.0.1'
     def okhttp_version = '3.8.1'
     def paging_version = "2.1.0"
 
@@ -49,16 +49,11 @@ dependencies {
 
     implementation "androidx.paging:paging-runtime:$paging_version"
 
-    // Koin
-    implementation "org.koin:koin-android:$koin_version"
-    // Koin Android Scope feature
     implementation "org.koin:koin-android-scope:$koin_version"
-    // Koin Android ViewModel feature
     implementation "org.koin:koin-android-viewmodel:$koin_version"
+    implementation "org.koin:koin-android-ext:$koin_version"
     testImplementation "org.koin:koin-test:$koin_version"
 
-
-    // ViewModel and LiveData
     implementation "androidx.lifecycle:lifecycle-extensions:$androidArchitectureVersion"
     annotationProcessor "androidx.lifecycle:lifecycle-compiler:$androidArchitectureVersion"
     testImplementation "androidx.arch.core:core-testing:$androidArchitectureVersion"
