@@ -23,7 +23,7 @@ class MovieRepositoryImpl(private val api : TmdbApi): MovieRepository{
     }
 
     override fun upcomingMovies(page: Long) : Observable<UpcomingMoviesResponse>{
-        return api.upcomingMovies(ApiConfig.API_KEY, ApiConfig.DEFAULT_LANGUAGE, page, ApiConfig.DEFAULT_REGION)
+        return api.upcomingMovies(ApiConfig.API_KEY, ApiConfig.DEFAULT_LANGUAGE, page)
     }
 
 
